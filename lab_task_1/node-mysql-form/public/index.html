@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Node MySQL CRUD Form</title>
+  <style>
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+      padding: 5px;
+      text-align: left;
+    }
+    input { margin: 5px 0; }
+    button {
+      padding: 5px 10px;
+      margin-right: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Save / Update Data</h2>
+
+<form id="userForm">
+  <input type="hidden" id="recordId">
+  <input type="text" id="user_id" placeholder="Enter ID" required><br>
+  <input type="email" id="email" placeholder="Enter Email" required><br>
+  <input type="text" id="phone" placeholder="Enter Phone" required><br>
+  <button type="submit" id="submitBtn">Save</button>
+</form>
+
+<h2>Users List</h2>
+<table id="usersTable">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>User ID</th>
+      <th>Email</th>
+      <th>Phone</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<script>
+const form = document.getElementById('userForm');
+const tableBody = document.querySelector('#usersTable tbody');
+const submitBtn = document.getElementById('submitBtn');
+let editingId = null;
+
+// Load users
+function loadUsers() {
+  fetch('/users')
+    .then(res => res.json())
+    .then(data => {
+      tableBody.innerHTML = '';
+      data.forEach(user => {
+        const row = document.createElement('tr');
+
+        // Escape single quotes in data
+        const user_id = user.user_id.replace(/'/g, "\\'");
+        const email = user.email.replace(/'/g, "\\'");
+        const phone = user.phone.replace(/'/g, "\\'");
+
+        row.innerHTML = `
+          <td>${user.id}</td>
+          <td>${user.user_id}</td>
+          <td>${user.email}</td>
+          <td>${user.phone}</td>
+          <td>
+            <button onclick="editUser(${user.id}, '${user_id}', '${email}', '${phone}')">Update</button>
+            <button onclick="deleteUser(${user.id})">Delete</button>
+          </td>
+        `;
+        tableBody.appendChild(row);
+      });
+    })
+    .catch(err => console.log(err));
+}
+
+// Save or Update
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const user_id = document.getElementById('user_id').value;
+  const email = document.getElementById('email').value;
+  const phone = document.getElementById('phone').value;
+
+  if(editingId) {
+    fetch(`/update/${editingId}`, {
+      method: 'PUT',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ user_id, email, phone })
+    }).then(() => {
+      editingId = null;
+      submitBtn.textContent = "Save";
+      form.reset();
+      loadUsers();
+      alert("Data Updated Successfully");
+    });
+  } else {
+    fetch('/submit', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ user_id, email, phone })
+    }).then(() => {
+      form.reset();
+      loadUsers();
+      alert("Data Saved Successfully");
+    });
+  }
+});
+
+// Edit user
+function editUser(id, user_id, email, phone) {
+  editingId = id;
+  document.getElementById('user_id').value = user_id;
+  document.getElementById('email').value = email;
+  document.getElementById('phone').value = phone;
+  submitBtn.textContent = "Update";
+}
+
+// Delete user
+function deleteUser(id) {
+  if(confirm("Are you sure to delete this user?")) {
+    fetch(`/delete/${id}`, { method: 'DELETE' })
+      .then(() => loadUsers());
+  }
+}
+
+// Initial load
+loadUsers();
+</script>
+
+</body>
+</html>

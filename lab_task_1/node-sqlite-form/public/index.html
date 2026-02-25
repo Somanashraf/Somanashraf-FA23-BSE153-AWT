@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Form CRUD</title>
+</head>
+<body>
+    <h2>Student Form</h2>
+    <form id="studentForm">
+        <input type="hidden" name="id" id="id">
+        Name: <input type="text" name="name" id="name" required><br><br>
+        Age: <input type="number" name="age" id="age" required><br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Student List</h2>
+    <table border="1" id="studentTable">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Actions</th>
+        </tr>
+    </table>
+
+    <script>
+        // Form submit
+        const form = document.getElementById('studentForm');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('id').value;
+            const name = document.getElementById('name').value;
+            const age = document.getElementById('age').value;
+
+            const url = id ? '/update' : '/submit';
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ id, name, age })
+            });
+            const data = await res.text();
+            alert(data);
+            form.reset();
+            loadStudents();
+        });
+
+        // Load students
+        async function loadStudents() {
+            const res = await fetch('/students');
+            const students = await res.json();
+            const table = document.getElementById('studentTable');
+            table.innerHTML = `<tr>
+                <th>ID</th><th>Name</th><th>Age</th><th>Actions</th>
+            </tr>`;
+            students.forEach(s => {
+                const row = table.insertRow();
+                row.insertCell(0).innerText = s.id;
+                row.insertCell(1).innerText = s.name;
+                row.insertCell(2).innerText = s.age;
+                row.insertCell(3).innerHTML = `
+                    <button onclick="editStudent(${s.id}, '${s.name}', ${s.age})">Edit</button>
+                    <button onclick="deleteStudent(${s.id})">Delete</button>
+                `;
+            });
+        }
+
+        function editStudent(id, name, age) {
+            document.getElementById('id').value = id;
+            document.getElementById('name').value = name;
+            document.getElementById('age').value = age;
+        }
+
+        async function deleteStudent(id) {
+            if(confirm('Are you sure you want to delete?')){
+                const res = await fetch('/delete', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ id })
+                });
+                const data = await res.text();
+                alert(data);
+                loadStudents();
+            }
+        }
+
+        // Load on page load
+        loadStudents();
+    </script>
+</body>
+</html>
