@@ -199,6 +199,29 @@ Each HTTP request contains all necessary information. The server does not store 
 - No verbs in URIs (actions defined by HTTP methods)
 - Hierarchical structure: `/members/{id}/borrowed-books`
 
+## Screenshots
+
+### Homepage
+![Homepage](screenshots/homepage.png)
+
+### Books Listing
+![Books List](screenshots/books-list.png)
+
+### Add Book Form
+![Add Book](screenshots/books-create.png)
+
+### Members Listing
+![Members List](screenshots/members-list.png)
+
+### Add Member Form
+![Add Member](screenshots/members-create.png)
+
+### API Documentation
+![API Documentation](screenshots/api-documentation.png)
+
+### Mobile Responsive View
+![Mobile View](screenshots/mobile-view.png)
+
 ## Testing the Application
 
 1. **View Books**: Navigate to Books page and browse the sample data
