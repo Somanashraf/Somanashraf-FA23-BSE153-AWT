@@ -4,7 +4,8 @@ This document describes the user interface and what you should see when running 
 
 ## Homepage
 
-**URL**: http://localhost:8000
+<img width="1919" height="878" alt="Screenshot 2026-03-08 234401" src="https://github.com/user-attachments/assets/c85b7c80-4d3a-4c80-aa6d-71ad016cd92d" />
+
 
 ### Description
 - Clean, centered welcome card
@@ -20,8 +21,8 @@ This document describes the user interface and what you should see when running 
 ---
 
 ## Books Listing Page
+<img width="1896" height="876" alt="image" src="https://github.com/user-attachments/assets/e5454929-e207-433d-816e-da96e65d4ef1" />
 
-**URL**: http://localhost:8000/books
 
 ### Description
 - Grid layout displaying books in Bootstrap cards (3 columns on desktop)
@@ -50,7 +51,8 @@ This document describes the user interface and what you should see when running 
 
 ## Add Book Form
 
-**URL**: http://localhost:8000/books/create
+<img width="1898" height="870" alt="image" src="https://github.com/user-attachments/assets/17883264-3a51-439f-9bc0-0a22207b0a7d" />
+
 
 ### Description
 - Centered form in a card (6 columns wide)
@@ -71,8 +73,8 @@ This document describes the user interface and what you should see when running 
 ---
 
 ## Edit Book Form
+<img width="1890" height="873" alt="image" src="https://github.com/user-attachments/assets/793534d7-f217-47d2-8dd3-3727787cb4f6" />
 
-**URL**: http://localhost:8000/books/{id}/edit
 
 ### Description
 - Same layout as Add Book form
@@ -110,7 +112,8 @@ This document describes the user interface and what you should see when running 
 
 ## Members Listing Page
 
-**URL**: http://localhost:8000/members
+<img width="1879" height="881" alt="image" src="https://github.com/user-attachments/assets/7b998759-8932-4f7d-8ba9-b6461bae59a1" />
+
 
 ### Description
 - Grid layout displaying members in Bootstrap cards (3 columns on desktop)
@@ -132,8 +135,8 @@ This document describes the user interface and what you should see when running 
 ---
 
 ## Add Member Form
+<img width="1911" height="874" alt="image" src="https://github.com/user-attachments/assets/70ecff64-2844-4aee-854c-68d519c57716" />
 
-**URL**: http://localhost:8000/members/create
 
 ### Description
 - Centered form in a card (6 columns wide)
@@ -153,7 +156,8 @@ This document describes the user interface and what you should see when running 
 
 ## Edit Member Form
 
-**URL**: http://localhost:8000/members/{id}/edit
+<img width="1913" height="871" alt="image" src="https://github.com/user-attachments/assets/21802608-89d0-4530-a95e-c4fc448a9b73" />
+
 
 ### Description
 - Same layout as Add Member form
@@ -180,7 +184,8 @@ This document describes the user interface and what you should see when running 
 
 ## API Documentation Page
 
-**URL**: http://localhost:8000/api-documentation
+<img width="1893" height="874" alt="image" src="https://github.com/user-attachments/assets/b4acbea2-2e93-4886-9ac3-c68971ea7c9a" />
+
 
 ### Description
 - Comprehensive documentation of all API endpoints
