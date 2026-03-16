@@ -10,6 +10,23 @@ A full-stack **MERN Stack** application for managing library books, members, and
 
 ---
 
+## 📸 Screenshots
+
+### Home Page
+![Home Hero](./screenshots/home-hero.png)
+![Home Stats](./screenshots/home.png)
+
+### Books Page
+![Books](./screenshots/books.png)
+
+### Members Page
+![Members](./screenshots/members.png)
+
+### Borrow Records Page
+![Borrow Records](./screenshots/borrow-records.png)
+
+---
+
 ##   Tech Stack
 
 | Layer | Technology |
