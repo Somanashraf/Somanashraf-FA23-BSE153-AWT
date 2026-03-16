@@ -1,0 +1,256 @@
+/* Members Page Styles */
+.members-container {
+  animation: fadeIn 0.6s ease-in;
+}
+
+/* Table Card */
+.table-card {
+  border: none;
+  border-radius: 25px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  animation: scaleIn 0.6s ease-out 0.2s both;
+  background: white;
+}
+
+.table-card .card-body {
+  padding: 0;
+}
+
+/* Modern Table */
+.modern-table {
+  margin: 0;
+  border: none;
+}
+
+.modern-table thead {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.modern-table thead th {
+  border: none;
+  padding: 20px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.th-icon {
+  margin-right: 8px;
+  font-size: 1.1rem;
+}
+
+.modern-table tbody tr {
+  border-bottom: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+  animation: slideInLeft 0.6s ease-out;
+  animation-fill-mode: both;
+}
+
+.modern-table tbody tr:hover {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  transform: scale(1.01);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.modern-table tbody td {
+  padding: 20px;
+  vertical-align: middle;
+  border: none;
+}
+
+/* Member Name with Avatar */
+.member-name {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.member-avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1rem;
+  box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+  animation: pulse 2s infinite;
+}
+
+/* Email Cell */
+.email-cell {
+  color: #667eea;
+  font-weight: 500;
+}
+
+/* Status Badge */
+.status-badge {
+  padding: 8px 16px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  animation: fadeIn 0.5s ease-in;
+}
+
+.status-active {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: white;
+  box-shadow: 0 4px 10px rgba(79, 172, 254, 0.3);
+}
+
+.status-inactive {
+  background: linear-gradient(135deg, #a0aec0 0%, #718096 100%);
+  color: white;
+  box-shadow: 0 4px 10px rgba(160, 174, 192, 0.3);
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.action-btn-edit,
+.action-btn-delete {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  border: 2px solid;
+}
+
+.action-btn-edit {
+  border-color: #667eea;
+  color: #667eea;
+  background: white;
+}
+
+.action-btn-edit:hover {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  transform: rotate(15deg) scale(1.1);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.action-btn-delete {
+  border-color: #f56565;
+  color: #f56565;
+  background: white;
+}
+
+.action-btn-delete:hover {
+  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+  color: white;
+  transform: rotate(-15deg) scale(1.1);
+  box-shadow: 0 4px 15px rgba(245, 101, 101, 0.4);
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  animation: fadeIn 0.8s ease-in;
+}
+
+.empty-icon {
+  font-size: 5rem;
+  margin-bottom: 20px;
+  animation: float 3s ease-in-out infinite;
+}
+
+.empty-state h3 {
+  font-size: 1.8rem;
+  color: #2d3748;
+  margin-bottom: 10px;
+}
+
+.empty-state p {
+  color: #718096;
+  font-size: 1.1rem;
+}
+
+/* Modern Spinner */
+.modern-spinner {
+  width: 60px;
+  height: 60px;
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .modern-table thead th {
+    padding: 15px 10px;
+    font-size: 0.85rem;
+  }
+
+  .modern-table tbody td {
+    padding: 15px 10px;
+    font-size: 0.9rem;
+  }
+
+  .member-avatar {
+    width: 35px;
+    height: 35px;
+    font-size: 0.85rem;
+  }
+
+  .th-icon {
+    display: none;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .action-btn-edit,
+  .action-btn-delete {
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
+  }
+}
+
+/* Table Scroll Animation */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 10px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
