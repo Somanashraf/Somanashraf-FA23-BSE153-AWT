@@ -2,7 +2,7 @@
   "crons": [
     {
       "path": "/api/cron/publish-scheduled",
-      "schedule": "0 * * * *"
+      "schedule": "0 9 * * *"
     },
     {
       "path": "/api/cron/expire-ads",
@@ -14,11 +14,11 @@
     },
     {
       "path": "/api/cron/health-db",
-      "schedule": "*/15 * * * *"
+      "schedule": "0 12 * * *"
     },
     {
       "path": "/api/cron/refresh-premium-rank",
-      "schedule": "0 6 */3 * *"
+      "schedule": "0 6 * * *"
     },
     {
       "path": "/api/cron/analytics-snapshot",
