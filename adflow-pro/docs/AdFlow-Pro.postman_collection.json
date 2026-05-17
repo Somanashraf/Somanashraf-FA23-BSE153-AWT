@@ -1,0 +1,90 @@
+{
+  "info": {
+    "name": "AdFlow Pro API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "cronSecret", "value": "your-cron-secret" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"test@example.com\",\n  \"password\": \"Password123!\"\n}"
+            },
+            "url": "{{baseUrl}}/api/auth/register"
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"client@demo.local\",\n  \"password\": \"Password123!\"\n}"
+            },
+            "url": "{{baseUrl}}/api/auth/login"
+          }
+        },
+        {
+          "name": "Me",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/auth/me" }
+        },
+        {
+          "name": "Logout",
+          "request": { "method": "POST", "url": "{{baseUrl}}/api/auth/logout" }
+        }
+      ]
+    },
+    {
+      "name": "Public",
+      "item": [
+        { "name": "Packages", "request": { "method": "GET", "url": "{{baseUrl}}/api/packages" } },
+        { "name": "Ads list", "request": { "method": "GET", "url": "{{baseUrl}}/api/ads" } },
+        {
+          "name": "Ad by slug",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/ads/demo-listing-1" }
+        },
+        {
+          "name": "Random question",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/questions/random" }
+        },
+        { "name": "Health DB", "request": { "method": "GET", "url": "{{baseUrl}}/api/health/db" } }
+      ]
+    },
+    {
+      "name": "Cron (Bearer CRON_SECRET or Vercel x-vercel-cron)",
+      "item": [
+        {
+          "name": "Publish scheduled",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{cronSecret}}" }
+            ],
+            "url": "{{baseUrl}}/api/cron/publish-scheduled"
+          }
+        },
+        {
+          "name": "Expire ads",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{cronSecret}}" }
+            ],
+            "url": "{{baseUrl}}/api/cron/expire-ads"
+          }
+        }
+      ]
+    }
+  ]
+}
