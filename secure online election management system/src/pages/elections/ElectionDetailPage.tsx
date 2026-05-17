@@ -1,0 +1,219 @@
+import { useParams, Link } from 'react-router-dom'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Clock, Users, Vote as VoteIcon } from 'lucide-react'
+import { Navbar } from '@/components/layout/Navbar'
+import { Footer } from '@/components/layout/Footer'
+import { useElection } from '@/hooks/useElections'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Progress } from '@/components/ui/progress'
+import { Skeleton } from '@/components/ui/skeleton'
+import { formatCountdown } from '@/lib/utils'
+import { useAuthStore } from '@/stores/auth-store'
+import { supabase } from '@/lib/supabase'
+import { addToWaitlist } from '@/lib/waitlist'
+import { toast } from 'sonner'
+import { useState } from 'react'
+import { isDemoMode } from '@/lib/demo-data'
+import { Check } from 'lucide-react'
+
+export function ElectionDetailPage() {
+  const { id } = useParams<{ id: string }>()
+  const { election, loading } = useElection(id)
+  const { user } = useAuthStore()
+  const [registering, setRegistering] = useState(false)
+  const [showModal, setShowModal] = useState(false)
+  const [termsAccepted, setTermsAccepted] = useState(false)
+
+  const handleJoinClick = () => {
+    if (!user) {
+      toast.error('Please login to register')
+      return
+    }
+    setShowModal(true)
+  }
+
+  const register = async () => {
+    if (!user || !election) return
+    if (!termsAccepted) {
+      toast.error('Please accept the terms and conditions')
+      return
+    }
+    setRegistering(true)
+    if (isDemoMode()) {
+      toast.success('Registered! Secret ID sent to your email (demo)')
+      setRegistering(false)
+      return
+    }
+    
+    const isWaitlisted = election.registered_count >= election.max_voters
+    
+    const { error } = await supabase.from('voter_registrations').insert({
+      election_id: election.id,
+      user_id: user.id,
+      terms_accepted: true,
+      status: isWaitlisted ? 'waitlisted' : 'registered',
+    })
+    
+    setRegistering(false)
+    setShowModal(false)
+    
+    if (error) {
+      toast.error(error.message)
+      return
+    }
+
+    // If waitlisted, add to waitlist table and send notification
+    if (isWaitlisted) {
+      await addToWaitlist(election.id, user.id)
+      toast.success('Added to waitlist. You will be notified if a spot opens up.')
+    } else {
+      toast.success('Registration successful!')
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen pt-24 px-4">
+        <Skeleton className="h-64 max-w-4xl mx-auto rounded-2xl" />
+      </div>
+    )
+  }
+
+  if (!election) {
+    return (
+      <div className="min-h-screen pt-24 text-center">
+        <p>Election not found</p>
+        <Button asChild className="mt-4"><Link to="/">Home</Link></Button>
+      </div>
+    )
+  }
+
+  const seatsLeft = election.max_voters - election.registered_count
+  const fillPercent = (election.registered_count / election.max_voters) * 100
+
+  return (
+    <div className="min-h-screen">
+      <Navbar />
+      <article className="pt-24 pb-16 px-4 max-w-4xl mx-auto">
+        {election.banner_url && (
+          <motion.img
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            src={election.banner_url}
+            alt=""
+            className="w-full h-56 object-cover rounded-2xl mb-8"
+          />
+        )}
+        <Badge className="mb-4">{election.status.replace('_', ' ')}</Badge>
+        <h1 className="text-4xl font-bold tracking-tight">{election.title}</h1>
+        <p className="mt-4 text-muted-foreground leading-relaxed">{election.description}</p>
+
+        <div className="mt-8 grid sm:grid-cols-3 gap-4">
+          <div className="glass rounded-xl p-4 flex items-center gap-3">
+            <Clock className="size-5 text-primary" />
+            <div>
+              <p className="text-xs text-muted-foreground">Time left</p>
+              <p className="font-medium">{formatCountdown(election.end_date)}</p>
+            </div>
+          </div>
+          <div className="glass rounded-xl p-4 flex items-center gap-3">
+            <Users className="size-5 text-primary" />
+            <div>
+              <p className="text-xs text-muted-foreground">Registered</p>
+              <p className="font-medium">
+                {election.registered_count}/{election.max_voters}
+              </p>
+            </div>
+          </div>
+          <div className="glass rounded-xl p-4 flex items-center gap-3">
+            <VoteIcon className="size-5 text-primary" />
+            <div>
+              <p className="text-xs text-muted-foreground">Votes cast</p>
+              <p className="font-medium">{election.vote_count}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-8">
+          <div className="flex justify-between text-sm mb-2">
+            <span>Seat availability</span>
+            <span className="text-muted-foreground">{seatsLeft} seats left</span>
+          </div>
+          <Progress value={fillPercent} />
+        </div>
+
+        <div className="mt-10 flex flex-wrap gap-4">
+          {user && ['registration_open', 'published', 'active'].includes(election.status) && (
+            <Button variant="gradient" onClick={handleJoinClick} disabled={registering}>
+              {registering ? 'Registering...' : seatsLeft > 0 ? 'Register to vote' : 'Join waitlist'}
+            </Button>
+          )}
+          {election.status === 'active' && (
+            <Button asChild variant="outline">
+              <Link to={`/vote/${election.id}`}>Cast vote</Link>
+            </Button>
+          )}
+          <Button asChild variant="ghost">
+            <Link to={`/elections/${election.id}/results`}>View results</Link>
+          </Button>
+        </div>
+      </article>
+      <Footer />
+
+      {/* Registration Modal */}
+      <AnimatePresence>
+        {showModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-card border border-border shadow-lg rounded-2xl w-full max-w-md overflow-hidden"
+            >
+              <div className="p-6 space-y-6">
+                <div>
+                  <h2 className="text-xl font-bold">I Want to Participate</h2>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Please confirm your participation in "{election.title}".
+                  </p>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="flex items-start gap-3 p-4 bg-muted/30 rounded-xl border border-border/50">
+                    <button
+                      type="button"
+                      onClick={() => setTermsAccepted(!termsAccepted)}
+                      className={`mt-0.5 size-5 flex-shrink-0 rounded border flex items-center justify-center transition-colors ${
+                        termsAccepted ? 'bg-primary border-primary text-primary-foreground' : 'border-input bg-background'
+                      }`}
+                    >
+                      {termsAccepted && <Check className="size-3.5" />}
+                    </button>
+                    <div className="text-sm">
+                      <label className="font-medium cursor-pointer" onClick={() => setTermsAccepted(!termsAccepted)}>
+                        I accept the terms and conditions
+                      </label>
+                      <p className="text-muted-foreground text-xs mt-1">
+                        I confirm that my identity details are accurate and I agree to participate fairly in this election. I understand that duplicate registrations are prohibited.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex gap-3 justify-end pt-2">
+                  <Button variant="ghost" onClick={() => setShowModal(false)} disabled={registering}>
+                    Cancel
+                  </Button>
+                  <Button variant="gradient" onClick={register} disabled={!termsAccepted || registering}>
+                    {registering ? 'Processing...' : 'Confirm Participation'}
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+    </div>
+  )
+}

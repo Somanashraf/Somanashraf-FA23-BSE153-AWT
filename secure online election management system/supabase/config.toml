@@ -1,0 +1,18 @@
+[project]
+id = "securevote"
+
+[api]
+enabled = true
+
+[db]
+major_version = 15
+
+[auth]
+site_url = "http://localhost:5173"
+additional_redirect_urls = ["https://your-app.vercel.app"]
+
+[functions.cast-vote]
+verify_jwt = true
+
+[functions.send-email]
+verify_jwt = false
