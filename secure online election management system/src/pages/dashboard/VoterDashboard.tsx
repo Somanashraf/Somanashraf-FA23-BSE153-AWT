@@ -50,22 +50,19 @@ export function VoterDashboard() {
         .eq('user_id', user.id)
         .order('created_at', { ascending: false })
 
-      if (regData) {
-        const registrations = regData as RegistrationWithElection[]
-        setRegistrations(registrations)
+      const registrations = (regData ?? []) as unknown as RegistrationWithElection[]
+      setRegistrations(registrations)
+      
+      const regIds = registrations.map((r: RegistrationWithElection) => r.id)
+      if (regIds.length > 0) {
+        // Fetch secret IDs for these registrations
+        const { data: secretData } = await supabase
+          .from('secret_ids')
+          .select('id, secret_code, is_used, poll_id, registration_id, polls(title)')
+          .in('registration_id', regIds)
         
-        const regIds = registrations.map((r) => r.id)
-        if (regIds.length > 0) {
-          // Fetch secret IDs for these registrations
-          const { data: secrets } = await supabase
-            .from('secret_ids')
-            .select('id, secret_code, is_used, poll_id, registration_id, polls(title)')
-            .in('registration_id', regIds)
-          
-          if (secrets) {
-            setSecretIds(secrets as SecretIdEntry[])
-          }
-        }
+        const secrets = (secretData ?? []) as unknown as SecretIdEntry[]
+        setSecretIds(secrets)
       }
       setLoading(false)
     }
