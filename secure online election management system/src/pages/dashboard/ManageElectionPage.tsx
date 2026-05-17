@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -22,8 +22,12 @@ import type { Election, Poll, Candidate } from '@/types/database'
 import { format } from 'date-fns'
 
 type RegistrationWithProfile = {
+  id: string
   user_id: string
-  profiles: { email: string; full_name?: string }
+  profiles: {
+    email: string
+    full_name?: string
+  } | null
 }
 
 type ElectionResultRow = {
@@ -182,7 +186,7 @@ export function ManageElectionPage() {
       .eq('election_id', id!)
       .in('status', ['registered', 'finalized'])
 
-    const registrationData = (regs ?? []) as RegistrationWithProfile[]
+    const registrationData = (regs ?? []) as unknown as RegistrationWithProfile[]
 
     // If starting election, send notifications and emails to all finalized voters
     if (newStatus === 'active' && registrationData.length > 0) {
@@ -195,11 +199,11 @@ export function ManageElectionPage() {
           type: 'election_start',
           link: `/vote/${id}`,
         })
-        
+
         // Send email
         await supabase.functions.invoke('send-email', {
           body: {
-            to: reg.profiles.email,
+            to: reg.profiles?.email,
             type: 'election_start',
             subject: `${election?.title} - Voting is Now Open`,
             data: {
@@ -209,7 +213,7 @@ export function ManageElectionPage() {
           },
         }).catch((err) => console.error('Email send error:', err))
       }
-      toast.success(`Election started! Notifications sent to ${regs.length} voters`)
+      toast.success(`Election started! Notifications sent to ${registrationData.length} voters`)
     }
 
     // If completing election, send completion and winner emails
@@ -223,11 +227,11 @@ export function ManageElectionPage() {
           type: 'election_end',
           link: `/elections/${id}/results`,
         })
-        
+
         // Send email
         await supabase.functions.invoke('send-email', {
           body: {
-            to: reg.profiles.email,
+            to: reg.profiles?.email,
             type: 'election_end',
             subject: `${election?.title} - Results Available`,
             data: {
@@ -237,7 +241,7 @@ export function ManageElectionPage() {
           },
         }).catch((err) => console.error('Email send error:', err))
       }
-      
+
       // Send winner email for each poll
       const { data: polls } = await supabase.from('polls').select('*').eq('election_id', id!)
       if (polls) {
@@ -246,7 +250,7 @@ export function ManageElectionPage() {
           const allResults = (results ?? []) as ElectionResultRow[]
           const pollResults = allResults.filter((r) => r.poll_id === poll.id)
           const winner = pollResults.sort((a, b) => b.vote_count - a.vote_count)[0]
-          
+
           if (winner) {
             const { data: candidate } = await supabase.from('candidates').select('*').eq('id', winner.candidate_id).single()
             if (candidate) {
@@ -264,14 +268,14 @@ export function ManageElectionPage() {
           }
         }
       }
-      
+
       toast.success(`Election completed! Results and notifications sent`)
     }
 
     if (newStatus !== 'active' && newStatus !== 'completed') {
       toast.success(`Election status: ${newStatus}`)
     }
-    
+
     setStatusLoading(false)
     loadAll()
   }
@@ -296,13 +300,13 @@ export function ManageElectionPage() {
     const promoted = await promoteFromWaitlist(id!)
 
     await logAudit('voter_list_finalized', 'election', id!, { promoted: promoted ?? 0 })
-    
+
     if (promoted && promoted > 0) {
       toast.success(`Voter list finalized. ${promoted} voters promoted from waitlist.`)
     } else {
       toast.success('Voter list finalized and locked')
     }
-    
+
     loadAll()
   }
 
@@ -314,7 +318,7 @@ export function ManageElectionPage() {
       .eq('election_id', id!)
       .eq('status', 'finalized')
 
-    const finalizedRegs = (regs ?? []) as RegistrationWithProfile[]
+    const finalizedRegs = (regs ?? []) as unknown as RegistrationWithProfile[]
     if (finalizedRegs.length === 0) { toast.error('No finalized voters found'); return }
 
     let generated = 0
@@ -341,11 +345,11 @@ export function ManageElectionPage() {
           // Send email
           await supabase.functions.invoke('send-email', {
             body: {
-              to: reg.profiles.email,
+              to: reg.profiles?.email,
               type: 'secret_id',
               subject: `Your Secret Voter ID — ${election?.title}`,
               data: {
-                name: reg.profiles.full_name ?? 'Voter',
+                name: reg.profiles?.full_name ?? 'Voter',
                 election: election?.title ?? '',
                 secretId: code,
                 link: `${window.location.origin}/vote/${id}`,
