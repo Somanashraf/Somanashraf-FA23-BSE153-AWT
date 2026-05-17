@@ -18,8 +18,9 @@
 
 **SecureVote** provides a complete end-to-end solution for conducting transparent and secure elections. Built with modern web technologies, it ensures voter anonymity while providing administrators with powerful tools to manage the entire election lifecycle.
 
-*(Tip: Add a screenshot of your dashboard or landing page here before publishing)*
-<!-- ![Dashboard Screenshot](./docs/dashboard-preview.png) -->
+
+<<img width="1890" height="875" alt="image" src="https://github.com/user-attachments/assets/a0cf8c00-d88a-4748-a69c-0df36058c19d" />
+
 
 ## ✨ Key Features
 
