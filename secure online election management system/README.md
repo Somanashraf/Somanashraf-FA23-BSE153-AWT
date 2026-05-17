@@ -22,6 +22,12 @@
 <<img width="1890" height="875" alt="image" src="https://github.com/user-attachments/assets/a0cf8c00-d88a-4748-a69c-0df36058c19d" />
 
 
+---
+LIVE LINK 
+https://somanashraf-fa-23-bse-153-awt-mc14.vercel.app/
+---
+
+
 ## ✨ Key Features
 
 *   🔐 **Role-Based Access Control:** Distinct workflows for Super Admins, Election Creators, and Voters.
