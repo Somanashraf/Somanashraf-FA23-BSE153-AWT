@@ -1,249 +1,250 @@
-# 🏥 Doctor Hub — Enterprise Healthcare Platform
+<p align="center">
+  <img src="https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=white" alt="React" />
+  <img src="https://img.shields.io/badge/Vite-5-646CFF?style=flat-square&logo=vite&logoColor=white" alt="Vite" />
+  <img src="https://img.shields.io/badge/Node.js-18+-339933?style=flat-square&logo=node.js&logoColor=white" alt="Node.js" />
+  <img src="https://img.shields.io/badge/Express-4-000000?style=flat-square&logo=express&logoColor=white" alt="Express" />
+  <img src="https://img.shields.io/badge/MongoDB-Atlas-47A248?style=flat-square&logo=mongodb&logoColor=white" alt="MongoDB" />
+  <img src="https://img.shields.io/badge/Tailwind-3-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white" alt="Tailwind" />
+</p>
 
-A production-ready, enterprise-grade healthcare consultation and patient history management platform built with the **MERN Stack**.
+<h1 align="center">Doctor Hub</h1>
+
+<p align="center">
+  <strong>Enterprise healthcare platform for appointments, prescriptions, and patient management.</strong><br />
+  Built with the MERN stack — featuring role-based dashboards, real-time notifications, and a premium landing experience.
+</p>
+
+<p align="center">
+  <a href="#features">Features</a> ·
+  <a href="#tech-stack">Tech Stack</a> ·
+  <a href="#getting-started">Getting Started</a> ·
+  <a href="#deployment">Deployment</a> ·
+  <a href="#test-accounts">Test Accounts</a>
+</p>
 
 ---
 
-## 🚀 Live Demo
-- **Frontend**: Deploy on [Vercel](https://vercel.com)
-- **Backend**: Deploy on [Render](https://render.com)
-- **Database**: [MongoDB Atlas](https://cloud.mongodb.com)
+## Overview
+
+**Doctor Hub** is a full-stack healthcare consultation platform that connects patients with doctors and streamlines clinic operations. It supports multi-role access, secure authentication, digital prescriptions, medical history tracking, and payment verification workflows.
+
+```mermaid
+flowchart LR
+    A[Browser] --> B[Vercel · Frontend]
+    B --> C[Render · Backend API]
+    C --> D[(MongoDB Atlas)]
+    B -. Socket.IO .-> C
+```
 
 ---
 
-## 📁 Project Structure
+## Features
+
+| Module | Capabilities |
+|--------|-------------|
+| **Landing Page** | Animated hero, features showcase, testimonials, CTA |
+| **Authentication** | JWT + refresh tokens, email verification, password reset |
+| **Patient Portal** | Find doctors, book appointments, prescriptions, medical history |
+| **Doctor Portal** | Schedule, consultations, prescriptions, clinic management |
+| **Assistant Portal** | Payment verification, appointment management |
+| **Admin Panel** | User management, analytics, doctor approval |
+| **Super Admin** | Full platform control, audit logs, role management |
+| **Real-time** | Live notifications via Socket.IO |
+
+---
+
+## Tech Stack
+
+| Layer | Technologies |
+|-------|-------------|
+| **Frontend** | React 18, Vite 5, Tailwind CSS, Framer Motion, Redux Toolkit |
+| **Forms & Validation** | React Hook Form, Zod |
+| **Backend** | Node.js, Express.js, Mongoose |
+| **Database** | MongoDB Atlas |
+| **Auth & Security** | JWT, bcrypt, Helmet, CORS, Rate Limiting |
+| **File Storage** | Cloudinary + local fallback |
+| **Email** | Nodemailer |
+| **Real-time** | Socket.IO |
+| **Deployment** | Vercel (frontend) · Render (backend) |
+
+---
+
+## Project Structure
 
 ```
 THE_DOCTOR_HUB/
-├── backend/                    # Node.js + Express API
+├── backend/
 │   ├── src/
-│   │   ├── config/             # DB, Cloudinary config
-│   │   ├── controllers/        # Route handlers
-│   │   ├── middleware/         # Auth, error, rate limiter
-│   │   ├── models/             # Mongoose schemas
-│   │   ├── routes/             # Express routers
-│   │   ├── services/           # (email etc.)
-│   │   ├── utils/              # JWT, logger, response helpers
-│   │   └── server.js           # Entry point
-│   ├── .env.example
-│   └── package.json
+│   │   ├── controllers/      # Business logic
+│   │   ├── middleware/       # Auth, rate limit, error handling
+│   │   ├── models/           # Mongoose schemas
+│   │   ├── routes/           # API routes
+│   │   └── server.js         # Entry point
+│   └── .env.example
 │
-└── frontend/                   # React + Vite SPA
-    ├── src/
-    │   ├── components/         # Reusable UI + layout
-    │   │   ├── ui/             # Button, Input, Card, Modal…
-    │   │   ├── layout/         # Sidebar, Navbar, DashboardLayout
-    │   │   └── shared/         # StatsCard, DataTable, DoctorCard…
-    │   ├── hooks/              # useApi, useToast, useSocket
-    │   ├── lib/                # utils.js
-    │   ├── pages/
-    │   │   ├── auth/           # Login, Register, ForgotPassword…
-    │   │   ├── patient/        # Dashboard, Doctors, Appointments…
-    │   │   ├── doctor/         # Dashboard, Appointments, Prescriptions…
-    │   │   ├── assistant/      # Dashboard, Payment Verification
-    │   │   ├── admin/          # Dashboard, Users, Doctors
-    │   │   ├── superadmin/     # Full control dashboard
-    │   │   └── shared/         # Profile, Messages, Notifications
-    │   ├── services/           # Axios API service layer
-    │   ├── store/              # Redux Toolkit slices
-    │   └── main.jsx
-    ├── vercel.json
-    └── package.json
+├── frontend/
+│   ├── src/
+│   │   ├── components/       # UI, layout, shared
+│   │   ├── pages/            # Landing, auth, dashboards
+│   │   ├── services/         # API layer
+│   │   └── store/            # Redux slices
+│   └── vercel.json
+│
+└── package.json              # Monorepo scripts
 ```
 
 ---
 
-## 🛠️ Tech Stack
-
-| Layer | Technology |
-|-------|-----------|
-| Frontend | React 18, Vite 5, Tailwind CSS, Framer Motion |
-| State | Redux Toolkit, React Redux |
-| Forms | React Hook Form + Zod validation |
-| Charts | Recharts |
-| Backend | Node.js, Express.js |
-| Database | MongoDB Atlas + Mongoose |
-| Auth | JWT + Refresh Tokens |
-| Files | Multer + Cloudinary |
-| Email | Nodemailer |
-| Real-time | Socket.IO |
-| Security | Helmet, CORS, Rate Limiting, Mongo Sanitize |
-
----
-
-## ⚙️ Local Setup
+## Getting Started
 
 ### Prerequisites
-- Node.js ≥ 18
-- MongoDB Atlas account
-- Cloudinary account
 
-### 1. Clone & Setup Backend
+- [Node.js](https://nodejs.org/) v18 or higher
+- [MongoDB Atlas](https://www.mongodb.com/atlas) cluster
+- [Cloudinary](https://cloudinary.com/) account *(optional, for file uploads)*
+
+### Installation
 
 ```bash
-cd backend
-cp .env.example .env
-# Fill in your .env values
-npm install
+# Clone the repository
+git clone https://github.com/your-username/doctor-hub.git
+cd doctor-hub
+
+# Install all dependencies
+npm run install:all
+
+# Configure environment variables
+cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env
+```
+
+Edit `backend/.env` with your MongoDB URI, JWT secrets, and other credentials.  
+For local development, the default `frontend/.env` uses the Vite proxy — no changes needed.
+
+### Seed Database
+
+```bash
+npm run seed
+```
+
+### Run Development Servers
+
+```bash
 npm run dev
 ```
 
-### 2. Setup Frontend
+| Service | URL |
+|---------|-----|
+| Frontend | http://localhost:5173 |
+| Backend API | http://localhost:5000 |
+| Health Check | http://localhost:5000/health |
 
-```bash
-cd frontend
-cp .env.example .env
-# Set VITE_API_URL=http://localhost:5000/api
-npm install
-npm run dev
+---
+
+## Test Accounts
+
+| Role | Email | Password |
+|------|-------|----------|
+| Super Admin | `superadmin@doctorhub.com` | `Admin@12345` |
+| Admin | `admin@doctorhub.com` | `Admin@12345` |
+| Assistant | `assistant@doctorhub.com` | `Assistant@123` |
+| Patient | `patient@doctorhub.com` | `Patient@123` |
+
+> Re-run `npm run seed` to reset passwords or unlock accounts after failed login attempts.
+
+---
+
+## User Roles
+
+```
+Patient  →  Book appointments · View prescriptions · Medical history
+Doctor   →  Manage patients · Prescriptions · Clinics · Analytics
+Assistant → Verify payments · Manage appointments
+Admin    →  User management · Doctor approval · Platform analytics
+Super Admin → Full control · Audit logs · Role management
 ```
 
 ---
 
-## 🌐 Deployment
+## Deployment
 
-### Backend → Render
+### 1. Backend — Render
 
-1. Push backend to a GitHub repo
-2. Create new **Web Service** on Render
-3. Set **Build Command**: `npm install`
-4. Set **Start Command**: `npm start`
-5. Add all environment variables from `.env.example`
-6. Copy the deployed URL (e.g., `https://doctor-hub-api.onrender.com`)
+| Setting | Value |
+|---------|-------|
+| Root Directory | `backend` |
+| Build Command | `npm install` |
+| Start Command | `npm start` |
 
-### Frontend → Vercel
+Copy all variables from `backend/.env.example` into Render's environment settings.  
+Set `FRONTEND_URL` to your Vercel deployment URL after frontend is live.
 
-1. Push frontend to GitHub
-2. Import to Vercel
-3. Set environment variable:
-   - `VITE_API_URL` = `https://your-render-url.onrender.com/api`
-   - `VITE_SOCKET_URL` = `https://your-render-url.onrender.com`
-4. Deploy — `vercel.json` handles SPA routing
+### 2. Frontend — Vercel
 
----
+| Setting | Value |
+|---------|-------|
+| Root Directory | `frontend` |
+| Build Command | `npm run build` |
+| Output Directory | `dist` |
 
-## 🔐 User Roles & Access
+**Environment Variables:**
 
-| Role | Access |
-|------|--------|
-| **Patient** | Book appointments, upload payments, view prescriptions & medical history |
-| **Doctor** | Manage appointments, add prescriptions, manage clinics, view analytics |
-| **Assistant** | Verify payments, manage appointment requests |
-| **Admin** | Manage all users, approve doctors, view analytics |
-| **Super Admin** | Full platform control, audit logs, role management |
-
----
-
-## 📋 Appointment Workflow
-
-```
-Patient books → Payment Pending → Patient uploads screenshot
-→ Assistant verifies → Appointment Confirmed → Doctor consults
-→ Doctor creates Prescription → Medical History updated
+```env
+VITE_API_URL=https://your-api.onrender.com/api
+VITE_SOCKET_URL=https://your-api.onrender.com
 ```
 
+### 3. Post-Deploy Checklist
+
+- [ ] Backend `/health` endpoint returns `200`
+- [ ] `FRONTEND_URL` in Render matches Vercel URL exactly
+- [ ] MongoDB Atlas allows connections from `0.0.0.0/0`
+- [ ] Run `npm run seed` against production database
+- [ ] Login flow works end-to-end
+
 ---
 
-## 🔒 Security Features
+## Available Scripts
 
-- JWT Authentication with refresh token rotation
-- Password hashing with bcrypt (12 rounds)
-- Role-Based Access Control (RBAC)
-- Rate limiting (auth: 10/15min, general: 200/15min)
-- MongoDB injection protection (mongoSanitize)
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start frontend and backend concurrently |
+| `npm run dev:frontend` | Start frontend only |
+| `npm run dev:backend` | Start backend only |
+| `npm run seed` | Create or reset demo accounts |
+| `npm run build` | Build frontend for production |
+| `npm run install:all` | Install dependencies for both apps |
+
+---
+
+## Security
+
+- JWT authentication with refresh token rotation
+- Password hashing (bcrypt, 12 rounds)
+- Role-based access control (RBAC)
+- Rate limiting on auth endpoints
+- MongoDB injection protection
 - HTTP security headers (Helmet)
-- CORS with whitelist
-- XSS protection
-- HTTP Parameter Pollution protection
-- Audit logging for all sensitive actions
+- CORS origin whitelist
+- Append-only medical records & immutable prescriptions
 
 ---
 
-## 🏥 Medical History Rules
+## Environment Variables
 
-- Records are **append-only** — cannot be edited or deleted
-- Prescriptions are **immutable** after creation
-- Full audit trail maintained forever
-- Only doctors can add new records
-- Patients cannot modify prescriptions
+| File | Purpose |
+|------|---------|
+| `backend/.env.example` | API, database, JWT, email, Cloudinary |
+| `frontend/.env.example` | API URL, Socket URL |
 
----
-
-## 📡 API Endpoints
-
-| Method | Route | Description |
-|--------|-------|-------------|
-| POST | `/api/auth/register` | Register user |
-| POST | `/api/auth/login` | Login |
-| POST | `/api/auth/logout` | Logout |
-| POST | `/api/auth/refresh-token` | Refresh JWT |
-| GET | `/api/auth/me` | Current user |
-| POST | `/api/auth/forgot-password` | Send reset email |
-| POST | `/api/auth/reset-password` | Reset password |
-| GET | `/api/doctors` | List/search doctors |
-| GET | `/api/doctors/:id` | Doctor detail |
-| POST | `/api/doctors` | Create doctor profile |
-| PUT | `/api/doctors/:id/approve` | Approve doctor |
-| POST | `/api/appointments` | Book appointment |
-| GET | `/api/appointments` | List appointments |
-| PUT | `/api/appointments/:id` | Update status |
-| POST | `/api/payments/:id/upload` | Upload payment proof |
-| PUT | `/api/payments/:id/verify` | Verify/reject payment |
-| GET | `/api/history/me` | Patient medical history |
-| POST | `/api/history/:patientId/records` | Add medical record |
-| POST | `/api/prescriptions` | Create prescription |
-| GET | `/api/prescriptions` | List prescriptions |
-| GET | `/api/messages/conversations` | List conversations |
-| POST | `/api/messages` | Send message |
-| GET | `/api/notifications` | Get notifications |
-| GET | `/api/analytics/overview` | Platform stats (Admin) |
+> **Never commit `.env` files to version control.**
 
 ---
 
-## 📦 Environment Variables
+## License
 
-### Backend `.env`
-```
-NODE_ENV=production
-PORT=5000
-MONGODB_URI=mongodb+srv://...
-JWT_SECRET=...
-JWT_EXPIRE=15m
-JWT_REFRESH_SECRET=...
-JWT_REFRESH_EXPIRE=7d
-CLOUDINARY_CLOUD_NAME=...
-CLOUDINARY_API_KEY=...
-CLOUDINARY_API_SECRET=...
-EMAIL_HOST=smtp.gmail.com
-EMAIL_PORT=587
-EMAIL_USER=...
-EMAIL_PASS=...
-EMAIL_FROM=Doctor Hub <noreply@doctorhub.com>
-FRONTEND_URL=https://your-frontend.vercel.app
-COOKIE_SECRET=...
-```
+This project is proprietary. All rights reserved.
 
-### Frontend `.env`
-```
-VITE_API_URL=https://your-backend.onrender.com/api
-VITE_SOCKET_URL=https://your-backend.onrender.com
-```
-
----
-
-## 🎨 Design System
-
-| Token | Value |
-|-------|-------|
-| Primary | `#2563EB` |
-| Secondary | `#14B8A6` |
-| Accent | `#8B5CF6` |
-| Success | `#22C55E` |
-| Warning | `#F59E0B` |
-| Error | `#EF4444` |
-| Background | `#F8FAFC` |
-| Dark BG | `#0F172A` |
-
----
-
-Built with ❤️ — Doctor Hub © 2024
+<p align="center">
+  <sub>Doctor Hub © 2024–2026</sub>
+</p>
