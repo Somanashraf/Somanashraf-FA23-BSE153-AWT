@@ -42,6 +42,10 @@ Screenshots
 LiveLink 
 ---
 https://thedoctorhub.vercel.app/
+---
+deployed only the frontend on vercel because to deploy backend render will be used and it is paid.
+
+
 
 ---
 
